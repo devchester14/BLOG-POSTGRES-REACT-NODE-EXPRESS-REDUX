@@ -22,7 +22,7 @@ router.post(
 		if (!errors.isEmpty()) {
 			return res.status(400).json({ errors: errors.array() });
 		}
-		const { id, username, pass, email, usertype } = req.body;
+		const { userid, username, pass, email, usertype } = req.body;
 		try {
 			let check1 = await pool.query(`SELECT * FROM tbl_users WHERE email=$1;`, [
 				email,
@@ -46,8 +46,8 @@ router.post(
 			}
 
 			const newuser = await pool.query(
-				'INSERT INTO tbl_users (id,username,pass,email,usertype) VALUES($1,$2,$3,$4,$5)',
-				[id, username, pass, email, usertype],
+				'INSERT INTO tbl_users (userid,username,pass,email,usertype) VALUES($1,$2,$3,$4,$5)',
+				[userid, username, pass, email, usertype],
 			);
 
 			res.json(newuser);
