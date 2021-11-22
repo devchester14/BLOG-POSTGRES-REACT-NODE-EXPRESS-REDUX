@@ -12,7 +12,7 @@ const Navbar = () => {
 				<Link to='/profiles'>Developers</Link>
 			</li>
 			<li>
-				<Link to='/api/posts'>Posts</Link>
+				<Link to='/allposts'>Posts</Link>
 			</li>
 			<li>
 				<Link to='/dashboard'>
@@ -35,7 +35,7 @@ const Navbar = () => {
 				<Link to='/createpost'>Create Blogs</Link>
 			</li>
 			<li>
-				<Link to='/api/posts'>Home</Link>
+				<Link to='/posts'>Home</Link>
 			</li>
 			<li>
 				<Link to='/register'>Register</Link>

@@ -1,7 +1,7 @@
 const express = require('express');
 const { check, validationResult } = require('express-validator');
 const { Router } = require('express');
-
+const bcrypt = require('bcrypt');
 const router = Router();
 
 const pool = require('../../db');
@@ -14,7 +14,10 @@ router.post(
 	'/',
 	check('username', 'Name is required').notEmpty(),
 	check('email', 'Please include a valid email').isEmail(),
-	check('pass', 'Please eneter a password with 6 or more characters').isLength({
+	check(
+		'password',
+		'Please eneter a password with 6 or more characters',
+	).isLength({
 		min: 6,
 	}),
 	async (req, res) => {
@@ -22,7 +25,7 @@ router.post(
 		if (!errors.isEmpty()) {
 			return res.status(400).json({ errors: errors.array() });
 		}
-		const { userid, username, pass, email, usertype } = req.body;
+		const { username, password, email, usertype } = req.body;
 		try {
 			let check1 = await pool.query(`SELECT * FROM tbl_users WHERE email=$1;`, [
 				email,
@@ -44,17 +47,49 @@ router.post(
 					error: 'Username Already Exists!!',
 				});
 			}
+			const saltRound = 10;
+			const salt = await bcrypt.genSalt(saltRound);
+
+			const bcryptPassword = bcrypt.hash(password, salt);
 
 			const newuser = await pool.query(
-				'INSERT INTO tbl_users (userid,username,pass,email,usertype) VALUES($1,$2,$3,$4,$5)',
-				[userid, username, pass, email, usertype],
+				'INSERT INTO tbl_users (username,password,email,usertype) VALUES($1,$2,$3,$4)',
+				[username, bcryptPassword, email, usertype],
 			);
 
-			res.json(newuser);
+			res.json(newuser.rows[0]);
 		} catch (err) {
 			console.error(err.message);
 		}
 	},
 );
+
+//Get all users
+router.get('/', async (req, res) => {
+	try {
+		const all_post = await pool.query('SELECT * FROM tbl_user ');
+		res.json(all_post.rows);
+	} catch (err) {
+		console.error(err.message);
+	}
+});
+
+//
+router.post('/login', async (req, res) => {
+	const { email, password } = req.body;
+	try {
+		const loggedInUser = await pool.query(
+			'SELECT * FROM tbl_users WHERE email=$1 AND password=$2',
+			[email, password],
+		);
+		if (loggedInUser.rows.length > 0) {
+			res.json(loggedInUser.rows);
+		} else {
+			console.error('wrong credentials');
+		}
+	} catch (err) {
+		console.error(err.message);
+	}
+});
 
 module.exports = router;

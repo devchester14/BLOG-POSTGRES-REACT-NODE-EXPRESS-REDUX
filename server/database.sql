@@ -1,21 +1,26 @@
 CREATE DATABASE blog;
 
+DROP TYPE IF EXISTS user_type;
 
  CREATE TYPE user_type as ENUM (
-        'ADMIN','USER'
+        'Standard','Admin'
     );
 
 
 CREATE TABLE tbl_users(
-    userid SERIAL PRIMARY KEY,
+    userid serial,
+    PRIMARY KEY (userid),
     username VARCHAR(50) UNIQUE NOT NULL,
-    pass VARCHAR(50) NOT NULL,
+    password VARCHAR(50) NOT NULL,
     email VARCHAR(50) UNIQUE NOT NULL,
-    usertype user_type
+    usertype user_type 
 );
 
+
+
 CREATE TABLE tbl_post(
-    postid SERIAL Primary Key,
+    postid serial ,
+    PRIMARY KEY(postid),
     user_id INTEGER REFERENCES tbl_users (userid) ON DELETE CASCADE,
     title VARCHAR(250),
     content VARCHAR(1000),
