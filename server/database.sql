@@ -31,7 +31,8 @@ CREATE TABLE tbl_post(
 );
 
 CREATE TABLE tbl_comment(
-    commentid INT  PRIMARY KEY,
+    commentid serial,
+    PRIMARY KEY (commentid),
     user_id INTEGER REFERENCES tbl_users (userid),
     content VARCHAR(100),
     comment_status INTEGER,

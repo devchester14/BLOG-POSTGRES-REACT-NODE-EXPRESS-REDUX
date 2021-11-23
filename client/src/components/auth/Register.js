@@ -34,6 +34,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
 						usertype: 'standard',
 					})
 					.then((response) => console.log(response));
+				navigate('/posts');
 				console.log(newuser);
 			} catch (err) {
 				console.error(err.message);
@@ -42,7 +43,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
 	};
 
 	return (
-		<Fragment>
+		<div className='container'>
 			<h1 className='large text-primary'>Sign Up</h1>
 			<p className='lead'>
 				<i className='fas fa-user' /> Create Your Account
@@ -93,7 +94,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
 			<p className='my-1'>
 				Already have an account? <Link to='/login'>Sign In</Link>
 			</p>
-		</Fragment>
+		</div>
 	);
 };
 

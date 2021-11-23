@@ -2,6 +2,7 @@ const express = require('express');
 const { check, validationResult } = require('express-validator');
 const { Router } = require('express');
 const bcrypt = require('bcrypt');
+const saltRounds = 10;
 const router = Router();
 
 const pool = require('../../db');
@@ -47,17 +48,17 @@ router.post(
 					error: 'Username Already Exists!!',
 				});
 			}
-			const saltRound = 10;
-			const salt = await bcrypt.genSalt(saltRound);
+			bcrypt.hash(password, saltRounds, (err, hash) => {
+				if (err) {
+					console.log(err);
+				}
+				const newuser = pool.query(
+					'INSERT INTO tbl_users (username,password,email,usertype) VALUES($1,$2,$3,$4)',
+					[username, password, email, hash],
+				);
+			});
 
-			const bcryptPassword = bcrypt.hash(password, salt);
-
-			const newuser = await pool.query(
-				'INSERT INTO tbl_users (username,password,email,usertype) VALUES($1,$2,$3,$4)',
-				[username, bcryptPassword, email, usertype],
-			);
-
-			res.json(newuser.rows[0]);
+			res.json(newuser);
 		} catch (err) {
 			console.error(err.message);
 		}

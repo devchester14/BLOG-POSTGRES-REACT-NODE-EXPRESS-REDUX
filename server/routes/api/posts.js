@@ -11,12 +11,12 @@ const pool = require('../../db');
 //Access ADMIN
 
 router.post('/', async (req, res) => {
-	const { postid, user_id, title, content, tags, poststatus } = req.body;
+	const { user_id, title, content, tags, poststatus } = req.body;
 	try {
 		console.log('POSTCREATED');
 		const newpost = await pool.query(
-			'INSERT INTO tbl_post (postid, user_id, title, content, tags, poststatus,created_at) VALUES ($1,$2,$3,$4,$5,$6,NOW())',
-			[postid, user_id, title, content, tags, poststatus],
+			'INSERT INTO tbl_post ( user_id, title, content, tags, poststatus,created_at) VALUES ($1,$2,$3,$4,$5,NOW())',
+			[user_id, title, content, tags, poststatus],
 		);
 		res.json(newpost);
 	} catch (err) {
@@ -29,7 +29,9 @@ router.post('/', async (req, res) => {
 //ACCESS PUBLIC
 router.get('/', async (req, res) => {
 	try {
-		const all_post = await pool.query('SELECT * FROM tbl_post ');
+		const all_post = await pool.query(
+			'SELECT * FROM tbl_post ORDER BY postid DESC',
+		);
 		res.json(all_post.rows);
 	} catch (err) {
 		console.error(err.message);
@@ -100,12 +102,12 @@ router.delete('/:postid', async (req, res) => {
 //ACCESS AUth users
 router.post('/:postid/comments', async (req, res) => {
 	const { postid } = req.params;
-	const { commentid, content, user_id, author, comment_status } = req.body;
+	const { content, user_id, author, comment_status } = req.body;
 	try {
 		console.log('creating comment');
 		const comment = pool.query(
-			`INSERT INTO tbl_comment (commentid,content,user_id,author,post_id,comment_status,created_at) VALUES ($1,$2,$3,$4,$5,$6,NOW())`,
-			[commentid, content, user_id, author, postid, comment_status],
+			`INSERT INTO tbl_comment (commentid,content,user_id,author,post_id,comment_status,created_at) VALUES ($1,$2,$3,$4,$5,NOW())`,
+			[content, user_id, author, postid, comment_status],
 		);
 		res.json(comment);
 	} catch (err) {

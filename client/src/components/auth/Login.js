@@ -1,8 +1,11 @@
 import React, { Fragment, useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
+// import { BrowserRouter as useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import axios from 'axios';
 
 const Login = ({ login, isAuthenticated }) => {
+	let navigate = useNavigate();
 	const [formData, setFormData] = useState({
 		email: '',
 		password: '',
@@ -22,6 +25,7 @@ const Login = ({ login, isAuthenticated }) => {
 					password: formData.password,
 				})
 				.then((response) => console.log(response));
+			navigate('/posts');
 			console.log(loggedinUser);
 		} catch (err) {
 			console.error(err.message);
@@ -29,12 +33,12 @@ const Login = ({ login, isAuthenticated }) => {
 	};
 
 	return (
-		<Fragment>
+		<div className='container'>
 			<h1 className='large text-primary'>Sign In</h1>
 			<p className='lead'>
 				<i className='fas fa-user' /> Sign Into Your Account
 			</p>
-			<form className='form' onSubmit={onSubmit}>
+			<form className='form ' onSubmit={onSubmit}>
 				<div className='form-group'>
 					<input
 						type='email'
@@ -60,7 +64,7 @@ const Login = ({ login, isAuthenticated }) => {
 			<p className='my-1'>
 				Don't have an account? <Link to='/register'>Sign Up</Link>
 			</p>
-		</Fragment>
+		</div>
 	);
 };
 export default Login;

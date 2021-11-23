@@ -25,7 +25,7 @@ const PostForm = ({ addPost }) => {
 					content: text.content,
 					tags: text.tags,
 					user_id: '1',
-					poststatus: 'draft',
+					poststatus: '1',
 				})
 				.then((Response) => console.log(Response));
 			console.log(addPost);
@@ -35,49 +35,51 @@ const PostForm = ({ addPost }) => {
 	};
 
 	return (
-		<div className='post-form'>
-			<div className='bg-primary p'>
-				<h3>Say Something...</h3>
+		<div className='post-form '>
+			<div className='container'>
+				<div className='bg-primary p'>
+					<h3>Say Something...</h3>
+				</div>
+				<form className='form my-1' onSubmit={onSubmit}>
+					<div className='form-group'>
+						<textarea
+							type='text'
+							name='title'
+							cols='30'
+							rows='1'
+							placeholder='Create a post Title'
+							value={title}
+							onChange={onChange}
+							required
+						/>
+					</div>
+					<div className='form-group'>
+						<textarea
+							type='text'
+							name='content'
+							cols='30'
+							rows='7'
+							placeholder='Post Content'
+							value={content}
+							onChange={onChange}
+							required
+						/>
+					</div>
+					<div className='form-group'>
+						<textarea
+							type='text'
+							name='tags'
+							cols='30'
+							rows='1'
+							placeholder='tags'
+							value={tags}
+							onChange={onChange}
+							required
+						/>
+					</div>
+					<input type='submit' className='btn btn-dark my-1' value='PostForm' />
+				</form>
 			</div>
-			<form className='form my-1' onSubmit={onSubmit}>
-				<div className='form-group'>
-					<textarea
-						type='text'
-						name='title'
-						cols='30'
-						rows='1'
-						placeholder='Create a post Title'
-						value={title}
-						onChange={onChange}
-						required
-					/>
-				</div>
-				<div className='form-group'>
-					<textarea
-						type='text'
-						name='content'
-						cols='30'
-						rows='7'
-						placeholder='Post Content'
-						value={content}
-						onChange={onChange}
-						required
-					/>
-				</div>
-				<div className='form-group'>
-					<textarea
-						type='text'
-						name='tags'
-						cols='30'
-						rows='1'
-						placeholder='tags'
-						value={tags}
-						onChange={onChange}
-						required
-					/>
-				</div>
-				<input type='submit' className='btn btn-dark my-1' value='Submit' />
-			</form>
 		</div>
 	);
 };
