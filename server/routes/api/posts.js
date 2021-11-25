@@ -32,7 +32,11 @@ router.get('/', async (req, res) => {
 		const all_post = await pool.query(
 			'SELECT * FROM tbl_post ORDER BY postid DESC',
 		);
-		res.json(all_post.rows);
+		if (!all_post.rows.length == 0) {
+			res.json(all_post.rows);
+		} else {
+			res.json('no posts');
+		}
 	} catch (err) {
 		console.error(err.message);
 	}

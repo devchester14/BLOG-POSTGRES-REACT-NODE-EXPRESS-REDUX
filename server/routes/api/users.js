@@ -52,13 +52,15 @@ router.post(
 				if (err) {
 					console.log(err);
 				}
-				const newuser = pool.query(
-					'INSERT INTO tbl_users (username,password,email,usertype) VALUES($1,$2,$3,$4)',
-					[username, password, email, hash],
-				);
+				const newuser = pool
+					.query(
+						'INSERT INTO tbl_users (username,password,email,usertype) VALUES($1,$2,$3,$4)',
+						[username, hash, email, usertype],
+					)
+					.then((res) => {
+						res.json(newuser);
+					});
 			});
-
-			res.json(newuser);
 		} catch (err) {
 			console.error(err.message);
 		}

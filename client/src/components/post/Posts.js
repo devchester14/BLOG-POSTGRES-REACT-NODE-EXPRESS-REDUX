@@ -41,7 +41,7 @@ const Posts = () => {
 									type='button'
 									className='btn btn-light'
 								>
-									<i class='fas fa-comments'></i>
+									<i className='fas fa-comments'></i>
 								</button>
 								<button
 									onClick={() => ''}
@@ -71,14 +71,14 @@ const Posts = () => {
 									type='button'
 									className='btn btn-light'
 								>
-									<i class='fas fa-edit'></i>
+									<i className='fas fa-edit'></i>
 								</button>
 								<button
 									onClick={() => ''}
 									type='button'
 									className='btn btn-light'
 								>
-									<i class='fas fa-archive'></i>
+									<i className='fas fa-archive'></i>
 								</button>
 								<button
 									onClick={() => ''}
