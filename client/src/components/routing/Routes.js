@@ -4,10 +4,10 @@ import { Route, Routes } from 'react-router-dom';
 import Login from '../auth/Login';
 
 import Landing from '../layout/Landing';
-import PostForm from '../post/PostForm';
-import Posts from '../post/Posts';
+import PostForm from '../postAndComment/PostForm';
+import Posts from '../postAndComment/Posts';
 import { useParams } from 'react-router';
-import PostItem from '../post/PostItem';
+import PostItem from '../postAndComment/PostItem';
 
 const Routes = () => {
 	const { postId } = useParams();

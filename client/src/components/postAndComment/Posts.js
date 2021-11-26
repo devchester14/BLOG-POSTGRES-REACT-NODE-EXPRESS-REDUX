@@ -6,14 +6,22 @@ import { useNavigate } from 'react-router';
 
 const Posts = () => {
 	const [listOfPosts, setListOfPosts] = useState([]);
+	const [pageNumber, setPageNumber] = useState(1);
 	let navigate = useNavigate();
 	useEffect(() => {
-		axios.get('http://localhost:3006/api/posts').then((data) => {
-			console.log(data.data);
-			setListOfPosts(data.data);
-		});
-	}, []);
-
+		axios
+			.get(`http://localhost:3006/api/posts?page=${pageNumber}`)
+			.then((data) => {
+				console.log(data.data);
+				setListOfPosts(data.data);
+			});
+	}, [pageNumber]);
+	const apihandler = () => {
+		setPageNumber(pageNumber + 1);
+	};
+	const apihandlerprev = () => {
+		setPageNumber(pageNumber - 1);
+	};
 	return (
 		<div className='container'>
 			<h1 className='large text-primary'>Posts</h1>
@@ -38,7 +46,7 @@ const Posts = () => {
 										: post.content}
 								</p>
 								<h4 className='my-1'>{post.tags}</h4>
-								<p className='post-date'>Created@:{post.created_at}</p>
+								<p className='post-date'>Posted on:{post.created_at}</p>
 								<button
 									onClick={() => ''}
 									type='button'
@@ -87,6 +95,12 @@ const Posts = () => {
 					</div>
 				))}
 			</div>
+			<button onClick={apihandlerprev} type='button' className='btn btn-light'>
+				<i class='fas fa-long-arrow-alt-left'></i>
+			</button>
+			<button onClick={apihandler} type='button' className='btn btn-light'>
+				<i class='fas fa-long-arrow-alt-right'></i>
+			</button>
 		</div>
 	);
 };
