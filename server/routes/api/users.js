@@ -64,7 +64,7 @@ router.post(
 //Get all users
 router.get('/', async (req, res) => {
 	try {
-		const all_post = await pool.query('SELECT * FROM tbl_user ');
+		const all_post = await pool.query('SELECT * FROM tbl_users ');
 		res.json(all_post.rows);
 	} catch (err) {
 		console.error(err.message);

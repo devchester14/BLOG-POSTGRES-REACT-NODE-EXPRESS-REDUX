@@ -105,15 +105,15 @@ router.delete('/:postid', async (req, res) => {
 //post comment
 //ACCESS AUth users
 router.post('/:postid/comments', async (req, res) => {
-	const { postid } = req.params;
-	const { content, user_id, author, comment_status } = req.body;
+	// const { postid } = req.params;
+	const { content, user_id, author, comment_status, postid } = req.body;
 	try {
 		console.log('creating comment');
 		const comment = pool.query(
-			`INSERT INTO tbl_comment (commentid,content,user_id,author,post_id,comment_status,created_at) VALUES ($1,$2,$3,$4,$5,NOW())`,
+			`INSERT INTO tbl_comment (content,user_id,author,post_id,comment_status,created_at) VALUES ($1,$2,$3,$4,$5,NOW())`,
 			[content, user_id, author, postid, comment_status],
 		);
-		res.json(comment);
+		res.json(comment.rows);
 	} catch (err) {
 		console.error(err.message);
 	}
