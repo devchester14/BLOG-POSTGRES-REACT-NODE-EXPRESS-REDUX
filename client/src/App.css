@@ -118,6 +118,7 @@ img {
 }
 .my-1 {
 	margin: 1rem 0;
+	word-break: break-all !important;
 }
 .my-2 {
 	margin: 2rem 0;
@@ -200,9 +201,9 @@ img {
 .bg-white,
 .badge-white,
 .alert-white {
-	background: #fff;
+	background: rgb(252, 250, 250);
 	color: #333;
-	border: #ccc solid 1px;
+	border: #ccc solid 3px;
 }
 
 .btn:hover {

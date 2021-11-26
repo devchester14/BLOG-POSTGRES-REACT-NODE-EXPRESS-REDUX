@@ -1,6 +1,6 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -25,7 +25,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
 			console.log('error');
 		} else {
 			try {
-				const body = { formData };
+				// const body = { formData };
 				const newuser = await axios
 					.post('http://localhost:3006/api/users', {
 						username: formData.username,

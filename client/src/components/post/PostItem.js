@@ -1,48 +1,47 @@
 import React, { Fragment } from 'react';
 
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
-const PostItem = ({
-	post: postid,
-	user_id,
-	title,
-	content,
-	poststatus,
-	createdat,
-	tags,
-	updatedat,
-}) => {
-	const [post, setPost] = useState();
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useParams } from 'react-router';
+
+const PostItem = () => {
+	const [post, setPost] = useState({
+		title: '',
+		content: '',
+		tags: '',
+	});
+	let { postid } = useParams();
+
+	useEffect(() => {
+		axios.get(`http://localhost:3006/api/posts/${postid}`).then((data) => {
+			console.log(data.data);
+			setPost({
+				title: data.data[0].title,
+				content: data.data[0].content,
+				tags: data.data[0].tags,
+				created_at: data.data[0].created_at,
+			});
+		});
+	}, []);
 
 	return (
-		<div className='post bg-white p-1 my-1'>
+		<div className='container bg-white '>
+			{/* <div className='post bg-white p-1 my-1 '> */}
+			{/* <div></div> */}
 			<div>
-				<p className='my-1'>{title}</p>
-				<p className='my-1'>{content}</p>
-				<p className='my-1'>{tags}</p>
-				<p className='post-date'>{createdat}</p>
+				<h1>{post.title}</h1>
+				<p className='my-1'>{post.content}</p>
 
-				<Fragment>
-					<button onClick={() => ''} type='button' className='btn btn-light'>
-						<i className='fas fa-thumbs-up' />{' '}
-						{/* <span>{likes.length > 0 && <span>{likes.length}</span>}</span> */}
-					</button>
-					<button onClick={() => ''} type='button' className='btn btn-light'>
-						<i className='fas fa-thumbs-down' />
-					</button>
-					{/* <Link to={`/posts/${_id}`} className='btn btn-primary'> */}
-					{/* Discussion{' '}
-						{comments.length > 0 && (
-							<span className='comment-count'>{comments.length}</span>
-						)}
-					</Link> */}
-					{/* {!auth.loading && user === auth.user._id && ( */}
-					<button onClick={() => ''} type='button' className='btn btn-danger'>
-						<i className='fas fa-times' />
-					</button>
-					{/* )} */}
-				</Fragment>
+				<button type='button' className='btn btn-light'>
+					<i className='fas fa-thumbs-up' />{' '}
+				</button>
+				<button type='button' className='btn btn-light'>
+					<i className='fas fa-thumbs-down' />
+				</button>
+
+				{/* // )} */}
 			</div>
+			{/* </div> */}
 		</div>
 	);
 };

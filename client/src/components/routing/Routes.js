@@ -6,8 +6,11 @@ import Login from '../auth/Login';
 import Landing from '../layout/Landing';
 import PostForm from '../post/PostForm';
 import Posts from '../post/Posts';
+import { useParams } from 'react-router';
+import PostItem from '../post/PostItem';
 
-const Routes = (props) => {
+const Routes = () => {
+	const { postId } = useParams();
 	return (
 		<section className='container'>
 			{/* <Alert /> */}
@@ -17,6 +20,7 @@ const Routes = (props) => {
 				<Route exact path='/register' element={<Register />} />
 				<Route exact path='/posts' element={<Posts />} />
 				<Route exact path='/createpost' element={<PostForm />} />
+				<Route exact path='/postItem/:postid' element={<PostItem />} />
 			</Routes>
 		</section>
 	);
