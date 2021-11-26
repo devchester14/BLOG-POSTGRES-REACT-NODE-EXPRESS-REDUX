@@ -27,21 +27,42 @@ const PostItem = () => {
 	return (
 		<div className='container bg-white '>
 			{/* <div className='post bg-white p-1 my-1 '> */}
-			{/* <div></div> */}
-			<div>
-				<h1>{post.title}</h1>
-				<p className='my-1'>{post.content}</p>
+			<Fragment>
+				<div></div>
+				<div>
+					<h1>{post.title}</h1>
+					<p className='my-1'>{post.content}</p>
+					<p className='post-date'>
+						Created@:{''}
+						{post.created_at}
+					</p>
+					<div>
+						<br />
+					</div>
+					<button onClick={() => ''} type='button' className='btn btn-light'>
+						<i className='fas fa-comments'></i>
+					</button>
+					<button onClick={() => ''} type='button' className='btn btn-light'>
+						<i className='fas fa-thumbs-up' />{' '}
+					</button>
+					<button onClick={() => ''} type='button' className='btn btn-light'>
+						<i className='fas fa-thumbs-down' />
+					</button>
 
-				<button type='button' className='btn btn-light'>
-					<i className='fas fa-thumbs-up' />{' '}
-				</button>
-				<button type='button' className='btn btn-light'>
-					<i className='fas fa-thumbs-down' />
-				</button>
-
-				{/* // )} */}
-			</div>
-			{/* </div> */}
+					<button onClick={() => ''} type='button' className='btn btn-light'>
+						<i className='fas fa-edit'></i>
+					</button>
+					<button onClick={() => ''} type='button' className='btn btn-light'>
+						<i className='fas fa-archive'></i>
+					</button>
+					<button onClick={() => ''} type='button' className='btn btn-danger'>
+						<i className='fas fa-times' />
+					</button>
+					<div>
+						<br />
+					</div>
+				</div>
+			</Fragment>
 		</div>
 	);
 };

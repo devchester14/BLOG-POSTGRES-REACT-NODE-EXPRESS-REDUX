@@ -38,7 +38,7 @@ const Posts = () => {
 										: post.content}
 								</p>
 								<h4 className='my-1'>{post.tags}</h4>
-								<p className='post-date'>{post.created_at}</p>
+								<p className='post-date'>Created@:{post.created_at}</p>
 								<button
 									onClick={() => ''}
 									type='button'
