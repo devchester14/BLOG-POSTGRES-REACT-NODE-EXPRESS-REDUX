@@ -1,12 +1,7 @@
 import { Fragment } from 'react';
 import './App.css';
 import Landing from './components/layout/Landing';
-import {
-	BrowserRouter as Router,
-	Route,
-	Routes,
-	useHiStory,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import Navbar from './components/layout/Navbar';
 import Login from './components/auth/Login';

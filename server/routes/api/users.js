@@ -48,19 +48,13 @@ router.post(
 					error: 'Username Already Exists!!',
 				});
 			}
-			bcrypt.hash(password, saltRounds, (err, hash) => {
-				if (err) {
-					console.log(err);
-				}
-				const newuser = pool
-					.query(
-						'INSERT INTO tbl_users (username,password,email,usertype) VALUES($1,$2,$3,$4)',
-						[username, hash, email, usertype],
-					)
-					.then((res) => {
-						res.json(newuser);
-					});
-			});
+
+			const newuser = pool.query(
+				'INSERT INTO tbl_users (username,password,email,usertype) VALUES($1,$2,$3,$4)',
+				[username, password, email, usertype],
+			);
+
+			res.json(newuser.rows);
 		} catch (err) {
 			console.error(err.message);
 		}

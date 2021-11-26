@@ -1,16 +1,15 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-// import PropTypes from 'prop-types';
-// import { connect } from 'react-redux';
-// import { addPost } from '../../actions/post';
-// import PostItem from './PostItem';
+import { useNavigate } from 'react-router';
 
 const PostForm = ({ addPost }) => {
+	let navigate = useNavigate();
 	const [text, setText] = useState({
 		title: '',
 		content: '',
 		tags: '',
 	});
+
 	const { title, content, tags } = text;
 
 	const onChange = (e) => setText({ ...text, [e.target.name]: e.target.value });
@@ -18,17 +17,18 @@ const PostForm = ({ addPost }) => {
 	const onSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			const body = { text };
+			// const body = { text };
 			const addpost = await axios
 				.post('http://localhost:3006/api/posts', {
 					title: text.title,
 					content: text.content,
 					tags: text.tags,
-					user_id: '1',
+					user_id: '12',
 					poststatus: '1',
 				})
 				.then((Response) => console.log(Response));
-			console.log(addPost);
+			navigate('/posts');
+			console.log(addpost);
 		} catch (err) {
 			console.error(err.message);
 		}
