@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router';
 import CommentForm from './CommentForm';
+import CommentItem from './CommentItem';
 
 const PostItem = () => {
 	const [post, setPost] = useState({
@@ -115,6 +116,9 @@ const PostItem = () => {
 					</Fragment>
 					<br />
 				</div>
+			</div>
+			<div className='container'>
+				<CommentItem postid={postid} />
 			</div>
 			<div className='container'>
 				{ShowCommentform ? <CommentForm /> : null}{' '}
