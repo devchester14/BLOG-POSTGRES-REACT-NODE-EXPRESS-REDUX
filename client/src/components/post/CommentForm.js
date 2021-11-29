@@ -1,13 +1,25 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import { useParams } from 'react-router';
 
 const CommentForm = ({ postId, addComment }) => {
-	const [text, setText] = useState('');
+	const [text, setText] = useState({
+		content: '',
+	});
+	let { postid } = useParams();
+
+	const { content } = text;
+	const onChange = (e) => setText({ ...text, [e.target.name]: e.target.value });
 
 	const onSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			const addComment = await axios.post('http://localhost:3006/api/posts/');
+			const addComment = await axios
+				.post(`http://localhost:3006/api/posts/${postid}/comments`, {
+					comment_status: '2',
+					content: text.content,
+				})
+				.then((Response) => console.log(Response));
 		} catch (err) {
 			console.error(err.message);
 		}
@@ -20,12 +32,13 @@ const CommentForm = ({ postId, addComment }) => {
 			</div>
 			<form className='form my-1' onSubmit={onSubmit}>
 				<textarea
-					name='text'
+					type='text'
+					name='content'
 					cols='30'
 					rows='5'
 					placeholder='Comment the post'
-					value={text}
-					onChange={(e) => setText(e.target.value)}
+					value={content}
+					onChange={onChange}
 					required
 				/>
 				<input type='submit' className='btn btn-dark my-1' value='Submit' />

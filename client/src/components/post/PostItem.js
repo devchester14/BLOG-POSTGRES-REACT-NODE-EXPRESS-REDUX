@@ -2,7 +2,8 @@ import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router';
+import { useParams, useNavigate } from 'react-router';
+import CommentForm from './CommentForm';
 
 const PostItem = () => {
 	const [post, setPost] = useState({
@@ -10,8 +11,9 @@ const PostItem = () => {
 		content: '',
 		tags: '',
 	});
-	const [commentform, SetCommentForm] = useState(false);
+	const [ShowCommentform, SetShowCommentForm] = useState(false);
 	let { postid } = useParams();
+	let navigate = useNavigate();
 
 	useEffect(() => {
 		axios.get(`http://localhost:3006/api/posts/${postid}`).then((data) => {
@@ -24,6 +26,16 @@ const PostItem = () => {
 			});
 		});
 	}, []);
+
+	const OnDelete = () => {
+		try {
+			axios.delete(`http://localhost:3006/api/posts/${postid}`);
+			console.log('Post Deleted');
+			navigate('/posts');
+		} catch (err) {
+			console.error(err.message);
+		}
+	};
 
 	return (
 		<Fragment>
@@ -45,14 +57,16 @@ const PostItem = () => {
 							<h1>{post.title}</h1>
 							<p className='my-1'>{post.content}</p>
 							<p className='post-date'>
-								Posted on:{''}
+								Posted on:
 								{post.created_at}
 							</p>
 							<div>
 								<br />
 							</div>
 							<button
-								onClick={() => ''}
+								onClick={() => {
+									SetShowCommentForm(!ShowCommentform);
+								}}
 								type='button'
 								className='btn btn-light'
 							>
@@ -88,7 +102,7 @@ const PostItem = () => {
 								<i className='fas fa-archive'></i>
 							</button>
 							<button
-								onClick={() => ''}
+								onClick={OnDelete}
 								type='button'
 								className='btn btn-danger'
 							>
@@ -99,8 +113,12 @@ const PostItem = () => {
 							</div>
 						</div>
 					</Fragment>
+					<br />
 				</div>
 			</div>
+			<div className='container'>
+				{ShowCommentform ? <CommentForm /> : null}{' '}
+			</div>{' '}
 		</Fragment>
 	);
 };

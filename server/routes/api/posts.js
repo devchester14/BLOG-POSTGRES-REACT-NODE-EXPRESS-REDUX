@@ -101,12 +101,12 @@ router.delete('/:postid', async (req, res) => {
 	}
 });
 
-//ROUTE POST api/:id/comments
+//ROUTE POST api/posts/:id/comments
 //post comment
 //ACCESS AUth users
 router.post('/:postid/comments', async (req, res) => {
-	// const { postid } = req.params;
-	const { content, user_id, author, comment_status, postid } = req.body;
+	const { postid } = req.params;
+	const { content, user_id, author, comment_status } = req.body;
 	try {
 		console.log('creating comment');
 		const comment = pool.query(

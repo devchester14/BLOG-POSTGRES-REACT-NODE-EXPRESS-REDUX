@@ -96,10 +96,10 @@ const Posts = () => {
 				))}
 			</div>
 			<button onClick={apihandlerprev} type='button' className='btn btn-light'>
-				<i class='fas fa-long-arrow-alt-left'></i>
+				<i className='fas fa-long-arrow-alt-left'></i>
 			</button>
 			<button onClick={apihandler} type='button' className='btn btn-light'>
-				<i class='fas fa-long-arrow-alt-right'></i>
+				<i className='fas fa-long-arrow-alt-right'></i>
 			</button>
 		</div>
 	);
