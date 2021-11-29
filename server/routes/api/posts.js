@@ -119,6 +119,25 @@ router.post('/:postid/comments', async (req, res) => {
 	}
 });
 
+//ROUTE geT api/posts/:id/comments
+//GET comment
+//ACCESS AUth users
+router.get('/:postid/comments', async (req, res) => {
+	const { postid } = req.params;
+
+	try {
+		console.log('fetching comment');
+		const comment = await pool.query(
+			'SELECT * FROM tbl_comment WHERE post_id =$1',
+			[postid],
+		);
+		console.log(comment.rows);
+		res.json(comment);
+	} catch (err) {
+		console.error(err.message);
+	}
+});
+
 //ROUTE PUT api/:id/comments/:id
 //approve comment
 //ACCESS ADMIN
