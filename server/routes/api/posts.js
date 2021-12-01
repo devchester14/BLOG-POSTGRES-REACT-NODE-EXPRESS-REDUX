@@ -108,9 +108,10 @@ router.delete('/:postid', validateToken, async (req, res) => {
 //ACCESS AUth users
 router.post('/:postid/comments', validateToken, async (req, res) => {
 	const { postid } = req.params;
-	const user_id = req.userid;
-	const author = req.username;
+
 	const { content, comment_status } = req.body;
+	const user_id = req.user.userid;
+	const author = req.user.username;
 	try {
 		console.log('creating comment');
 		const comment = pool.query(

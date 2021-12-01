@@ -97,6 +97,7 @@ router.post('/login', async (req, res) => {
 		} else {
 			const acessToken = sign(
 				{
+					userid: user.rows[0].userid,
 					username: user.rows[0].username,
 					email: user.rows[0].email,
 				},
