@@ -118,11 +118,11 @@ const PostItem = () => {
 				</div>
 			</div>
 			<div className='container'>
-				<CommentItem postid={postid} />
-			</div>
-			<div className='container'>
 				{ShowCommentform ? <CommentForm /> : null}{' '}
 			</div>{' '}
+			<div className='container'>
+				<CommentItem postid={postid} />
+			</div>
 		</Fragment>
 	);
 };

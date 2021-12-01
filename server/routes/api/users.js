@@ -1,8 +1,11 @@
 const express = require('express');
 const { check, validationResult } = require('express-validator');
 const { Router } = require('express');
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const saltRounds = 10;
+
+const { sign } = require('jsonwebtoken');
+
 const router = Router();
 
 const pool = require('../../db');
@@ -26,7 +29,9 @@ router.post(
 		if (!errors.isEmpty()) {
 			return res.status(400).json({ errors: errors.array() });
 		}
-		const { username, password, email, usertype } = req.body;
+		const saltRounds = 10;
+		const { username, email, password } = req.body;
+
 		try {
 			let check1 = await pool.query(`SELECT * FROM tbl_users WHERE email=$1;`, [
 				email,
@@ -48,13 +53,18 @@ router.post(
 					error: 'Username Already Exists!!',
 				});
 			}
-
+			const usertype = 'Standard';
+			const hashedPassword = await bcrypt.hash(password, saltRounds);
 			const newuser = pool.query(
 				'INSERT INTO tbl_users (username,password,email,usertype) VALUES($1,$2,$3,$4)',
-				[username, password, email, usertype],
+				[username, hashedPassword, email, usertype],
 			);
-
-			res.json(newuser.rows);
+			if (newuser === true) {
+				res.json({ message: 'USER CREATED' });
+				res.send(newuser);
+			} else {
+				console.error();
+			}
 		} catch (err) {
 			console.error(err.message);
 		}
@@ -73,18 +83,30 @@ router.get('/', async (req, res) => {
 
 //
 router.post('/login', async (req, res) => {
-	const { email, password } = req.body;
 	try {
-		const loggedInUser = await pool.query(
-			'SELECT * FROM tbl_users WHERE email=$1 AND password=$2',
-			[email, password],
+		const { email, password } = req.body;
+		const user = await pool.query('SELECT * FROM tbl_users WHERE email=$1 ', [
+			email,
+		]);
+		const hashedPassword = await bcrypt.compareSync(
+			password,
+			user.rows[0].password,
 		);
-		if (loggedInUser.rows.length > 0) {
-			res.json(loggedInUser.rows);
+		if (hashedPassword === false) {
+			res.json({ message: 'Invalid Credentials' });
 		} else {
-			console.error('wrong credentials');
+			const acessToken = sign(
+				{
+					username: user.rows[0].username,
+					email: user.rows[0].email,
+				},
+				'SecretKey',
+			);
+			res.json(acessToken);
+			console.error('Logged In');
 		}
 	} catch (err) {
+		res.send(err.message);
 		console.error(err.message);
 	}
 });

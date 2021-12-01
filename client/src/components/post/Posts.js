@@ -9,12 +9,10 @@ const Posts = () => {
 	const [pageNumber, setPageNumber] = useState(1);
 	let navigate = useNavigate();
 	useEffect(() => {
-		axios
-			.get(`http://localhost:3006/api/posts?page=${pageNumber}`)
-			.then((data) => {
-				console.log(data.data);
-				setListOfPosts(data.data);
-			});
+		axios.get(`http://localhost:3006/api/posts`).then((data) => {
+			console.log(data.data);
+			setListOfPosts(data.data);
+		});
 	}, [pageNumber]);
 	const apihandler = () => {
 		setPageNumber(pageNumber + 1);

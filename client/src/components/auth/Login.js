@@ -24,7 +24,13 @@ const Login = ({ login, isAuthenticated }) => {
 					email: formData.email,
 					password: formData.password,
 				})
-				.then((response) => console.log(response));
+				.then((response) => {
+					if (response.data.error) {
+						alert(response.data.error);
+					} else {
+						sessionStorage.setItem('accessToken', response.data);
+					}
+				});
 			navigate('/posts');
 			console.log(loggedinUser);
 		} catch (err) {

@@ -19,14 +19,28 @@ const PostForm = ({ addPost }) => {
 		try {
 			// const body = { text };
 			const addpost = await axios
-				.post('http://localhost:3006/api/posts', {
-					title: text.title,
-					content: text.content,
-					tags: text.tags,
-					user_id: '12',
-					poststatus: '1',
-				})
-				.then((Response) => console.log(Response));
+				.post(
+					'http://localhost:3006/api/posts',
+					{
+						title: text.title,
+						content: text.content,
+						tags: text.tags,
+						user_id: '6',
+						poststatus: '1',
+					},
+					{
+						headers: {
+							accessToken: sessionStorage.getItem('accessToken'),
+						},
+					},
+				)
+				.then((response) => {
+					if (response.data.error) {
+						console.log(response.data.error);
+					} else {
+						setText = [...text, addpost];
+					}
+				});
 			navigate('/posts');
 			console.log(addpost);
 		} catch (err) {

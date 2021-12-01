@@ -15,11 +15,25 @@ const CommentForm = ({ postId, addComment }) => {
 		e.preventDefault();
 		try {
 			const addComment = await axios
-				.post(`http://localhost:3006/api/posts/${postid}/comments`, {
-					comment_status: '2',
-					content: text.content,
-				})
-				.then((Response) => console.log(Response));
+				.post(
+					`http://localhost:3006/api/posts/${postid}/comments`,
+					{
+						comment_status: '2',
+						content: text.content,
+					},
+					{
+						headers: {
+							accessToken: sessionStorage.getItem('accessToken'),
+						},
+					},
+				)
+				.then((response) => {
+					if (response.data.error) {
+						console.log(response.data.error);
+					} else {
+						setText = [...text, addComment];
+					}
+				});
 		} catch (err) {
 			console.error(err.message);
 		}

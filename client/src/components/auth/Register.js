@@ -31,7 +31,6 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
 						username: formData.username,
 						password: formData.password,
 						email: formData.email,
-						usertype: 'standard',
 					})
 					.then((response) => console.log(response));
 				navigate('/posts');

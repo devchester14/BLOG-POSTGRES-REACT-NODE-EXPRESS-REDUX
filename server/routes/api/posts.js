@@ -2,6 +2,8 @@ const express = require('express');
 
 const { Router } = require('express');
 
+const { validateToken } = require('../../middlewares/AuthMiddleware');
+
 const router = Router();
 
 const pool = require('../../db');
@@ -10,7 +12,7 @@ const pool = require('../../db');
 //Create Post
 //Access ADMIN
 
-router.post('/', async (req, res) => {
+router.post('/', validateToken, async (req, res) => {
 	const { user_id, title, content, tags, poststatus } = req.body;
 	try {
 		console.log('POSTCREATED');
@@ -69,7 +71,7 @@ router.get('/:postid', async (req, res) => {
 //edit post
 //ACCESS ADMIN
 
-router.put('/:postid', async (req, res) => {
+router.put('/:postid', validateToken, async (req, res) => {
 	const { postid } = req.params;
 	const { title, content } = req.body;
 	try {
@@ -87,7 +89,7 @@ router.put('/:postid', async (req, res) => {
 //ROUTE DELETE api/:id
 //delete post
 //ACCESS ADMIN
-router.delete('/:postid', async (req, res) => {
+router.delete('/:postid', validateToken, async (req, res) => {
 	const { postid } = req.params;
 	try {
 		console.log('deleting post');
@@ -104,9 +106,11 @@ router.delete('/:postid', async (req, res) => {
 //ROUTE POST api/posts/:id/comments
 //post comment
 //ACCESS AUth users
-router.post('/:postid/comments', async (req, res) => {
+router.post('/:postid/comments', validateToken, async (req, res) => {
 	const { postid } = req.params;
-	const { content, user_id, author, comment_status } = req.body;
+	const user_id = req.userid;
+	const author = req.username;
+	const { content, comment_status } = req.body;
 	try {
 		console.log('creating comment');
 		const comment = pool.query(
@@ -141,7 +145,7 @@ router.get('/:postid/comments', async (req, res) => {
 //ROUTE PUT api/:id/comments/:id
 //approve comment
 //ACCESS ADMIN
-router.put('/:post_id/comments/:comment_id', (req, res) => {
+router.put('/:post_id/comments/:comment_id', validateToken, (req, res) => {
 	const { post_id, comment_id } = req.params;
 	const { comment_status } = req.body;
 	try {
@@ -161,18 +165,22 @@ router.put('/:post_id/comments/:comment_id', (req, res) => {
 //DELETE COMMENT
 //AcCESS ADMIN
 
-router.delete('/:post_id/comments/:comment_id', async (req, res) => {
-	const { post_id, comment_id } = req.params;
-	try {
-		console.log('deleting post');
-		const deleteComment = await pool.query(
-			`DELETE FROM tbl_comment  WHERE  commentid=$1`,
-			[comment_id],
-		);
-		res.json('Comment Deleted!!');
-	} catch (err) {
-		console.error(message);
-	}
-});
+router.delete(
+	'/:post_id/comments/:comment_id',
+	validateToken,
+	async (req, res) => {
+		const { post_id, comment_id } = req.params;
+		try {
+			console.log('deleting post');
+			const deleteComment = await pool.query(
+				`DELETE FROM tbl_comment  WHERE  commentid=$1`,
+				[comment_id],
+			);
+			res.json('Comment Deleted!!');
+		} catch (err) {
+			console.error(message);
+		}
+	},
+);
 
 module.exports = router;
