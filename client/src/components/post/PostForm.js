@@ -25,7 +25,6 @@ const PostForm = ({ addPost }) => {
 						title: text.title,
 						content: text.content,
 						tags: text.tags,
-						user_id: '6',
 						poststatus: '1',
 					},
 					{

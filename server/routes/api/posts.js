@@ -13,7 +13,9 @@ const pool = require('../../db');
 //Access ADMIN
 
 router.post('/', validateToken, async (req, res) => {
-	const { user_id, title, content, tags, poststatus } = req.body;
+	const { title, content, tags, poststatus } = req.body;
+	const user_id = req.user.userid;
+	const author = req.user.username;
 	try {
 		console.log('POSTCREATED');
 		const newpost = await pool.query(
