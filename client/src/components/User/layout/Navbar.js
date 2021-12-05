@@ -34,7 +34,7 @@ const Navbar = () => {
 			<li>
 				<Link to='/createpost'>Create Blogs</Link>
 			</li>
-			<li>
+	0 		<li>
 				<Link to='/posts'>Home</Link>
 			</li>
 			<li>

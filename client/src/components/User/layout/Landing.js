@@ -10,11 +10,11 @@ const Landing = () => {
 						Create a Blog, share Blog posts and get reviews from others
 					</p>
 					<div className='buttons'>
-						<Link to='/register' className='btn btn-primary'>
-							Sign Up
+						<Link to='/admin/Landing' className='btn btn-primary'>
+							ADMIN
 						</Link>
-						<Link to='/login' className='btn btn-light'>
-							Login
+						<Link to='/user/Landing' className='btn btn-light'>
+							USER
 						</Link>
 					</div>
 				</div>

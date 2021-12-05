@@ -10,9 +10,9 @@ const router = Router();
 
 const pool = require('../../db');
 
-//#ROUTE POST api/users
+//Register Admin
 
-//Register user
+//RegisterAdmin
 //Access Public
 router.post(
 	'/',
@@ -53,26 +53,24 @@ router.post(
 					error: 'Username Already Exists!!',
 				});
 			}
-			const usertype = 'Standard';
+			const usertype = 'Admin';
 			const hashedPassword = await bcrypt.hash(password, saltRounds);
 			const newuser = pool.query(
 				'INSERT INTO tbl_users (username,password,email,usertype) VALUES($1,$2,$3,$4)',
 				[username, hashedPassword, email, usertype],
 			);
 
-			res.json({ message: 'USER CREATED' });
+			res.json({ message: 'ADMIN CREATED' });
 		} catch (err) {
 			console.error(err.message);
 		}
 	},
 );
 
-//Get all ADMINS
-
-//GET ALL USERS
+//get all registered admins
 router.get('/', async (req, res) => {
 	try {
-		const usertype = 'Standard';
+		const usertype = 'Admin';
 		const all_post = await pool.query(
 			'SELECT * FROM tbl_users WHERE usertype = $1',
 			[usertype],
@@ -83,7 +81,7 @@ router.get('/', async (req, res) => {
 	}
 });
 
-//users Login
+//Admin Login
 router.post('/login', async (req, res) => {
 	try {
 		const { email, password } = req.body;
