@@ -2,10 +2,10 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import Login from '../User/auth/Login';
-
+import AdminPosts from '../Admin/post/AdminPosts';
 import Landing from '../User/layout/Landing';
 import PostForm from '../postAndComment/PostForm';
-import Posts from '../postAndComment/Posts';
+import Posts from '../User/post/Posts';
 import { useParams } from 'react-router';
 import PostItem from '../postAndComment/PostItem';
 
@@ -19,7 +19,8 @@ const Routes = () => {
 				<Route exact path='/user/login' celement={<Login />} />
 				<Route exact path='/user/register' element={<Register />} />
 				<Route exact path='/admin/register' element={<AdminRegister />} />
-				<Route exact path='/posts' element={<Posts />} />
+				<Route exact path='/adminposts' element={<AdminPosts />} />
+				<Route exact path='/posts' element={} />
 				<Route exact path='/createpost' element={<PostForm />} />
 				<Route exact path='/postItem/:postid' element={<PostItem />} />
 			</Routes>

@@ -32,16 +32,7 @@ const Navbar = () => {
 	const guestLinks = (
 		<ul>
 			<li>
-				<Link to='/createpost'>Create Blogs</Link>
-			</li>
-	0 		<li>
-				<Link to='/posts'>Home</Link>
-			</li>
-			<li>
-				<Link to='/register'>Register</Link>
-			</li>
-			<li>
-				<Link to='/login'>Login</Link>
+				<Link to='/posts'>Posts</Link>
 			</li>
 		</ul>
 	);

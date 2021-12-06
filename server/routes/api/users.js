@@ -97,7 +97,7 @@ router.post('/login', async (req, res) => {
 		if (hashedPassword === false) {
 			res.json({ message: 'Invalid Credentials' });
 		} else {
-			const acessToken = sign(
+			const accessToken = sign(
 				{
 					userid: user.rows[0].userid,
 					username: user.rows[0].username,
@@ -105,7 +105,7 @@ router.post('/login', async (req, res) => {
 				},
 				'SecretKey',
 			);
-			res.json(acessToken);
+			res.json(accessToken);
 			console.error('Logged In');
 		}
 	} catch (err) {

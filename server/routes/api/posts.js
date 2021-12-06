@@ -2,7 +2,10 @@ const express = require('express');
 
 const { Router } = require('express');
 
-const { validateToken } = require('../../middlewares/AuthMiddleware');
+const {
+	validateToken,
+	validateUserToken,
+} = require('../../middlewares/AuthMiddleware');
 
 const router = Router();
 
@@ -108,7 +111,7 @@ router.delete('/:postid', validateToken, async (req, res) => {
 //ROUTE POST api/posts/:id/comments
 //post comment
 //ACCESS AUth users
-router.post('/:postid/comments', validateToken, async (req, res) => {
+router.post('/:postid/comments', validateUserToken, async (req, res) => {
 	const { postid } = req.params;
 
 	const { content, comment_status } = req.body;
@@ -170,7 +173,7 @@ router.put('/:post_id/comments/:comment_id', validateToken, (req, res) => {
 
 router.delete(
 	'/:post_id/comments/:comment_id',
-	validateToken,
+	[validateUserToken, validateToken],
 	async (req, res) => {
 		const { post_id, comment_id } = req.params;
 		try {
