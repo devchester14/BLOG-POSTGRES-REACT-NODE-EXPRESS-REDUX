@@ -60,7 +60,25 @@ router.post(
 				'INSERT INTO tbl_users (username,password,email,usertype) VALUES($1,$2,$3,$4)',
 				[username, hashedPassword, email, usertype],
 			);
-
+			const payload = {
+				user: {
+					id: user.id,
+				},
+			};
+			const accessToken = sign(
+				{
+					payload,
+					userid: user.rows[0].userid,
+					username: user.rows[0].username,
+					email: user.rows[0].email,
+				},
+				'SecretKey',
+				(err, accessToken) => {
+					if (err) throw err;
+					res.json({ accessToken });
+				},
+			);
+			res.json(accessToken);
 			res.json({ message: 'ADMIN CREATED' });
 		} catch (err) {
 			console.error(err.message);
@@ -96,15 +114,19 @@ router.post('/login', async (req, res) => {
 		if (hashedPassword === false) {
 			res.json({ message: 'Invalid Credentials' });
 		} else {
-			const acessToken = sign(
+			const accessToken = sign(
 				{
 					userid: user.rows[0].userid,
 					username: user.rows[0].username,
 					email: user.rows[0].email,
 				},
 				'SecretKey',
+				(err, accessToken) => {
+					if (err) throw err;
+					res.json({ accessToken });
+				},
 			);
-			res.json(acessToken);
+			res.json(accessToken);
 			console.log('Logged In');
 		}
 	} catch (err) {

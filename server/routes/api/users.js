@@ -59,7 +59,21 @@ router.post(
 				'INSERT INTO tbl_users (username,password,email,usertype) VALUES($1,$2,$3,$4)',
 				[username, hashedPassword, email, usertype],
 			);
-
+			const payload = {
+				user: {
+					id: user.id,
+				},
+			};
+			const accessToken = sign(
+				{
+					payload,
+					userid: user.rows[0].userid,
+					username: user.rows[0].username,
+					email: user.rows[0].email,
+				},
+				'SecretKey',
+			);
+			res.json(accessToken);
 			res.json({ message: 'USER CREATED' });
 		} catch (err) {
 			console.error(err.message);
@@ -86,7 +100,8 @@ router.get('/', async (req, res) => {
 //authenticate user & get Token
 router.post('/login', async (req, res) => {
 	try {
-		const { email, password } = req.body;
+		const { email } = req.body;
+		const { password } = req.body;
 		const user = await pool.query('SELECT * FROM tbl_users WHERE email=$1 ', [
 			email,
 		]);

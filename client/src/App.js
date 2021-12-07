@@ -13,42 +13,58 @@ import UserLanding from './components/User/layout/UserLanding';
 import Posts from './components/User/post/Posts';
 import AdminLogin from './components/Admin/auth/AdminLogin';
 import PostItemAdmin from './components/Admin/post/PostItemAdmin';
-import axios from 'axios';
+import { Provider } from 'react-redux';
 import PostItemUser from './components/User/post/PostItem';
+import store from './store';
+import { loadAdmin, loadUser } from './actions/auth';
+import { LOGOUT } from './actions/types';
+import setAuthToken from './utils/setAuthToken';
 
 function App() {
-	const [authState, setAuthState] = useState(false);
-
-	useEffect(() => {});
+	useEffect(() => {
+		if (localStorage.token) {
+			setAuthToken(localStorage.token);
+		}
+		store.dispatch(loadUser() || loadAdmin());
+		//LOG OUT FROM ALL TABS IF LOGGED OUT IN ONE TAB
+		window.addEventListener('storage', () => {
+			if (!localStorage.token) store.dispatch({ type: LOGOUT });
+		});
+	}, []);
 	return (
-		<Router>
-			<Fragment>
-				<Routes>
-					<Route exact path='/' element={<Landing />} />
-					<Route exact path='admin/landing' element={<AdminLanding />} />
-					<Route exact path='user/landing' element={<UserLanding />} />
-					<Route exact path='/login' element={<Login />} />
-					<Route exact path='/admin/login' element={<AdminLogin />} />
-					<Route exact path='/register' element={<Register />} />
-					<Route exact path='/admin/register' element={<AdminRegister />} />
-					<Route exact path='/users/posts' element={<Posts />} />
-					<Route exact path='/posts' element={<Posts />} />
-					<Route exact path='/admin/posts' element={<AdminPosts />} />
-					<Route
-						exact
-						path='/adminpostitem/:postid'
-						element={<PostItemAdmin />}
-					/>
-					<Route
-						exact
-						path='/userpostitem/:postid'
-						element={<PostItemUser />}
-					/>
-					<Route exact path='/createpost' element={<PostForm />} />
-					<Route element={Routes} />
-				</Routes>
-			</Fragment>
-		</Router>
+		<Provider store={store}>
+			<Router>
+				<Fragment>
+					<Routes>
+						<Route exact path='/' element={<Landing />} />
+						<Route exact path='/posts' element={<Posts />} />
+						<Route exact path='user/landing' element={<UserLanding />} />
+						<Route exact path='/login' element={<Login />} />
+						<Route exact path='/users/posts' element={<Posts />} />
+						<Route
+							exact
+							path='/userpostitem/:postid'
+							element={<PostItemUser />}
+						/>
+						<Route exact path='admin/landing' element={<AdminLanding />} />
+						<Route exact path='/admin/register' element={<AdminRegister />} />
+
+						<Route exact path='/admin/login' element={<AdminLogin />} />
+						<Route exact path='/register' element={<Register />} />
+
+						<Route exact path='/admin/posts' element={<AdminPosts />} />
+
+						<Route exact path='/createpost' element={<PostForm />} />
+						<Route element={Routes} />
+						<Route
+							exact
+							path='/adminpostitem/:postid'
+							element={<PostItemAdmin />}
+						/>
+					</Routes>
+				</Fragment>
+			</Router>
+		</Provider>
 	);
 }
 

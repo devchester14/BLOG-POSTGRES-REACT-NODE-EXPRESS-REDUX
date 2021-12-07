@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-// import { BrowserRouter as useHistory } from 'react-router-dom';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { loginAdmin } from '../../../actions/auth';
 
-const AdminLogin = ({ login, isAuthenticated }) => {
+const AdminLogin = ({ loginAdmin }) => {
 	let navigate = useNavigate();
 	const [formData, setFormData] = useState({
 		email: '',
