@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import './App.css';
 import Landing from './components/User/layout/Landing';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -6,14 +6,20 @@ import AdminRegister from './components/Admin/auth/AdminReg';
 import Navbar from './components/User/layout/Navbar';
 import Login from './components/User/auth/Login';
 import Register from './components/User/auth/Register';
-import Posts from './components/Admin/post/AdminPosts';
+import AdminPosts from './components/Admin/post/AdminPosts';
 import PostForm from './components/Admin/post/PostForm';
-import PostItem from './components/Admin/post/PostItem';
 import AdminLanding from './components/Admin/AdminLayout/AdminLanding';
 import UserLanding from './components/User/layout/UserLanding';
-import AdminPosts from './components/User/post/Posts';
+import Posts from './components/User/post/Posts';
+import AdminLogin from './components/Admin/auth/AdminLogin';
+import PostItemAdmin from './components/Admin/post/PostItemAdmin';
+import axios from 'axios';
+import PostItemUser from './components/User/post/PostItem';
 
 function App() {
+	const [authState, setAuthState] = useState(false);
+
+	useEffect(() => {});
 	return (
 		<Router>
 			<Fragment>
@@ -22,12 +28,22 @@ function App() {
 					<Route exact path='admin/landing' element={<AdminLanding />} />
 					<Route exact path='user/landing' element={<UserLanding />} />
 					<Route exact path='/login' element={<Login />} />
-					<Route exact path='/admin/login' element={<Login />} />
+					<Route exact path='/admin/login' element={<AdminLogin />} />
 					<Route exact path='/register' element={<Register />} />
 					<Route exact path='/admin/register' element={<AdminRegister />} />
-					<Route exact path='/posts' element={<Landing />} />
-					<Route exact path='/adminposts' element={<AdminPosts />} />
-					<Route exact path='/postItem/:postid' element={<PostItem />} />
+					<Route exact path='/users/posts' element={<Posts />} />
+					<Route exact path='/posts' element={<Posts />} />
+					<Route exact path='/admin/posts' element={<AdminPosts />} />
+					<Route
+						exact
+						path='/adminpostitem/:postid'
+						element={<PostItemAdmin />}
+					/>
+					<Route
+						exact
+						path='/userpostitem/:postid'
+						element={<PostItemUser />}
+					/>
 					<Route exact path='/createpost' element={<PostForm />} />
 					<Route element={Routes} />
 				</Routes>

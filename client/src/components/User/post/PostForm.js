@@ -29,7 +29,7 @@ const PostForm = ({ addPost }) => {
 					},
 					{
 						headers: {
-							accessToken: sessionStorage.getItem('accessToken'),
+							accessToken: localStorage.getItem('accessToken'),
 						},
 					},
 				)

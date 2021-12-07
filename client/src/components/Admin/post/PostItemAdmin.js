@@ -6,7 +6,7 @@ import { useParams, useNavigate } from 'react-router';
 import CommentForm from './CommentForm';
 import CommentItem from './CommentItem';
 
-const PostItem = () => {
+const PostItemAdmin = () => {
 	const [post, setPost] = useState({
 		title: '',
 		content: '',
@@ -42,7 +42,7 @@ const PostItem = () => {
 		<Fragment>
 			<div className='container'>
 				<div>
-					<Link to='/posts' className='btn'>
+					<Link to='/admin/posts' className='btn'>
 						Back To Posts
 					</Link>
 					<div>
@@ -126,4 +126,4 @@ const PostItem = () => {
 		</Fragment>
 	);
 };
-export default PostItem;
+export default PostItemAdmin;

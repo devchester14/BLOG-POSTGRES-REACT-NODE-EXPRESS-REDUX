@@ -8,6 +8,8 @@ import PostForm from '../postAndComment/PostForm';
 import Posts from '../User/post/Posts';
 import { useParams } from 'react-router';
 import PostItem from '../postAndComment/PostItem';
+import PostItemAdmin from '../Admin/post/PostItemAdmin';
+import PostItemUser from '../User/post/PostItem';
 
 const Routes = () => {
 	const { postId } = useParams();
@@ -19,10 +21,15 @@ const Routes = () => {
 				<Route exact path='/user/login' celement={<Login />} />
 				<Route exact path='/user/register' element={<Register />} />
 				<Route exact path='/admin/register' element={<AdminRegister />} />
-				<Route exact path='/adminposts' element={<AdminPosts />} />
-				<Route exact path='/posts' element={} />
+
+				<Route exact path='admin/posts' element={<AdminPosts />} />
 				<Route exact path='/createpost' element={<PostForm />} />
-				<Route exact path='/postItem/:postid' element={<PostItem />} />
+				<Route
+					exact
+					path='/adminpostitem/:postid'
+					element={<PostItemAdmin />}
+				/>
+				<Route exact path='/userpostitem/:postid' element={<PostItemUser />} />
 			</Routes>
 		</section>
 	);

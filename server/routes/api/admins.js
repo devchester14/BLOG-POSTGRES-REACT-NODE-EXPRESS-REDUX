@@ -1,9 +1,10 @@
 const express = require('express');
 const { check, validationResult } = require('express-validator');
 const { Router } = require('express');
+
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-
+const { validateToken } = require('../../middlewares/AuthMiddleware');
 const { sign } = require('jsonwebtoken');
 
 const router = Router();
@@ -55,7 +56,7 @@ router.post(
 			}
 			const usertype = 'Admin';
 			const hashedPassword = await bcrypt.hash(password, saltRounds);
-			const newuser = pool.query(
+			const user = pool.query(
 				'INSERT INTO tbl_users (username,password,email,usertype) VALUES($1,$2,$3,$4)',
 				[username, hashedPassword, email, usertype],
 			);
@@ -104,12 +105,17 @@ router.post('/login', async (req, res) => {
 				'SecretKey',
 			);
 			res.json(acessToken);
-			console.error('Logged In');
+			console.log('Logged In');
 		}
 	} catch (err) {
 		res.send(err.message);
 		console.error(err.message);
 	}
+});
+
+//auth
+router.get('/auth', validateToken, (req, res) => {
+	res.json(req.user);
 });
 
 module.exports = router;

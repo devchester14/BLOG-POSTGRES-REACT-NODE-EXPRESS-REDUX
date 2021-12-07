@@ -1,0 +1,24 @@
+export const SET_ALERT = 'SET_ALERT';
+export const REMOVE_ALERT = 'REMOVE_ALERT';
+export const USER_REGISTER_SUCCESS='USER_REGISTER_SUCCESS'
+export const ADMIN_REGISTER_SUCCESS = 'ADMIN_REGISTER_SUCCESS';
+export const ADMIN_REGISTER_FAIL = 'ADMIN_REGISTER_FAIL';
+export const USER_REGISTER_FAIL = 'USER_REGISTER_FAIL';
+export const USER_LOADED = 'USER_LOADED';
+
+export const ADMIN_LOADED = 'ADMIN_LOADED';
+export const AUTH_ERROR = 'AUTH_ERROR';
+export const ADMIN_LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const ADMIN_LOGIN_FAIL = 'LOGIN_FAIL';
+export const LOGOUT = 'LOGOUT';
+
+export const GET_POSTS = 'GET_POSTS';
+export const GET_POST = 'GET_POST';
+export const POST_ERROR = 'POST_ERROR';
+export const UPDATE_LIKES = 'UPDATE_LIKES';
+export const DELETE_POST = 'DELETE_POST';
+export const ADD_POST = 'ADD_POST';
+export const ADD_COMMENT = 'ADD_COMMENT';
+export const REMOVE_COMMENT = 'REMOVE_COMMENT';
+export const USER_LOGIN_SUCCESS='USER_LOGIN_SUCCESS';
+export const USER_LOGIN_FAIL='USER_LOGIN_FAIL',

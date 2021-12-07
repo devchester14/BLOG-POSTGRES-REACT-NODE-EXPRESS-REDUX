@@ -6,7 +6,7 @@ import { useParams, useNavigate } from 'react-router';
 import CommentForm from './CommentForm';
 import CommentItem from './CommentItem';
 
-const PostItem = () => {
+const PostItemUser = () => {
 	const [post, setPost] = useState({
 		title: '',
 		content: '',
@@ -28,30 +28,28 @@ const PostItem = () => {
 		});
 	}, []);
 
-	const OnDelete = () => {
-		try {
-			axios.delete(`http://localhost:3006/api/posts/${postid}`);
-			console.log('Post Deleted');
-			navigate('/posts');
-		} catch (err) {
-			console.error(err.message);
-		}
-	};
+	// const OnDelete = () => {
+	// 	try {
+	// 		axios.delete(`http://localhost:3006/api/posts/${postid}`);
+	// 		console.log('Post Deleted');
+	// 		navigate('/posts');
+	// 	} catch (err) {
+	// 		console.error(err.message);
+	// 	}
+	// };
 
 	return (
 		<Fragment>
 			<div className='container'>
 				<div>
-					<Link to='/posts' className='btn'>
+					<Link to='/users/posts' className='btn'>
 						Back To Posts
 					</Link>
 					<div>
 						<br />
 					</div>
 				</div>
-				<div className='bg-white '>
-					{/* <div className='post bg-white p-1 my-1 '> */}
-
+				<div className='bg-white'>
 					<Fragment>
 						<div></div>
 						<div>
@@ -88,27 +86,6 @@ const PostItem = () => {
 								<i className='fas fa-thumbs-down' />
 							</button>
 
-							<button
-								onClick={() => ''}
-								type='button'
-								className='btn btn-light'
-							>
-								<i className='fas fa-edit'></i>
-							</button>
-							<button
-								onClick={() => ''}
-								type='button'
-								className='btn btn-light'
-							>
-								<i className='fas fa-archive'></i>
-							</button>
-							<button
-								onClick={OnDelete}
-								type='button'
-								className='btn btn-danger'
-							>
-								<i className='fas fa-times' />
-							</button>
 							<div>
 								<br />
 							</div>
@@ -126,4 +103,4 @@ const PostItem = () => {
 		</Fragment>
 	);
 };
-export default PostItem;
+export default PostItemUser;

@@ -14,10 +14,10 @@ function CommentItem() {
 			});
 	}, []);
 	return (
-		<div className=' bg-white'>
+		<div>
 			{comments.map((comment) => (
-				<div key={comment.commentid} className='container'>
-					<p className=''>{comment.content}</p>
+				<div key={comment.commentid} className='bg-white container'>
+					<p>{comment.content}</p>
 					<p className='post-date'>Posted on:{comment.created_at}</p>
 				</div>
 			))}

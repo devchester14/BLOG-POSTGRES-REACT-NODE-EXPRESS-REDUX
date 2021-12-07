@@ -3,7 +3,7 @@ const { check, validationResult } = require('express-validator');
 const { Router } = require('express');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-
+const { validateUserToken } = require('../../middlewares/AuthMiddleware');
 const { sign } = require('jsonwebtoken');
 
 const router = Router();
@@ -83,7 +83,7 @@ router.get('/', async (req, res) => {
 	}
 });
 
-//users Login
+//authenticate user & get Token
 router.post('/login', async (req, res) => {
 	try {
 		const { email, password } = req.body;
@@ -111,6 +111,17 @@ router.post('/login', async (req, res) => {
 	} catch (err) {
 		res.send(err.message);
 		console.error(err.message);
+	}
+});
+
+//GET user by token
+//get user by token
+router.get('/auth', validateUserToken, (req, res) => {
+	try {
+		res.json(req.user);
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).send('server error');
 	}
 });
 
