@@ -13,10 +13,10 @@ const UserLanding = () => {
 							Create a Blog, share Blog posts and get reviews from others
 						</p>
 						<div className='buttons'>
-							<Link to='/register' className='btn btn-primary'>
+							<Link to='/user/register' className='btn btn-primary'>
 								USER REGISTER
 							</Link>
-							<Link to='/login' className='btn btn-light'>
+							<Link to='/user/login' className='btn btn-light'>
 								USER LOGIN
 							</Link>
 						</div>

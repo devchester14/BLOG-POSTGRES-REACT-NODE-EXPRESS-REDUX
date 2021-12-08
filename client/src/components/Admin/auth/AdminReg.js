@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-
+import { setAlert } from '../../../actions/alert';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
-const AdminRegister = ({ setAlert, register, isAuthenticated }) => {
+import { registerAdmin } from '../../../actions/auth';
+import { connect } from 'react-redux';
+import { Navigate } from 'react-router';
+const AdminRegister = ({ setAlert, registerAdmin, isAuthenticated }) => {
 	let navigate = useNavigate();
 	const [formData, setFormData] = useState({
 		username: '',
@@ -22,27 +24,31 @@ const AdminRegister = ({ setAlert, register, isAuthenticated }) => {
 	const onSubmit = async (e) => {
 		e.preventDefault();
 		if (password !== password2) {
-			console.log('error');
+			setAlert('Passwords do not match', 'danger');
 		} else {
-			try {
-				// const body = { formData };
-				const newuser = await axios
-					.post('http://localhost:3006/api/admins', {
-						username: formData.username,
-						password: formData.password,
-						email: formData.email,
-					})
-					.then((response) => console.log(response));
-				navigate('/posts');
-				console.log(newuser);
-			} catch (err) {
-				console.error(err.message);
-			}
+			registerAdmin({ username, email, password });
+			// try {
+			// 	// const body = { formData };
+			// 	const newuser = await axios
+			// 		.post('http://localhost:3006/api/admins', {
+			// 			username: formData.username,
+			// 			password: formData.password,
+			// 			email: formData.email,
+			// 		})
+			// 		.then((response) => console.log(response));
+			// 	navigate('/posts');
+			// 	console.log(newuser);
+			// } catch (err) {
+			// 	console.error(err.message);
+			// }
 		}
 	};
+	if (isAuthenticated) {
+		return <Navigate to='/admin/posts' />;
+	}
 
 	return (
-		<div className='container'>
+		<div>
 			<h1 className='large text-primary'>Sign Up</h1>
 			<p className='lead'>
 				<i className='fas fa-user' /> Create Your Account
@@ -97,4 +103,16 @@ const AdminRegister = ({ setAlert, register, isAuthenticated }) => {
 	);
 };
 
-export default AdminRegister;
+AdminRegister.propTypes = {
+	setAlert: PropTypes.func.isRequired,
+	registerAdmin: PropTypes.func.isRequired,
+	isAuthenticated: PropTypes.bool,
+};
+
+const mapStateToProps = (state) => ({
+	isAuthenticated: state.auth.isAuthenticated,
+});
+
+export default connect(mapStateToProps, { setAlert, registerAdmin })(
+	AdminRegister,
+);

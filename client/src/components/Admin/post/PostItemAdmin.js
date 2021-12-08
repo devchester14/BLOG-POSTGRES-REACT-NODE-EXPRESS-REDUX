@@ -1,42 +1,25 @@
-import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useParams, useNavigate } from 'react-router';
+import React, { Fragment, useEffect } from 'react';
+import { Link, useParams, params } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { addLike, removeLike, deletePost } from '../../../actions/post';
 import CommentForm from './CommentForm';
 import CommentItem from './CommentItem';
+import { getPost } from '../../../actions/post';
 
-const PostItemAdmin = () => {
-	const [post, setPost] = useState({
-		title: '',
-		content: '',
-		tags: '',
-	});
-	const [ShowCommentform, SetShowCommentForm] = useState(false);
-	let { postid } = useParams();
-	let navigate = useNavigate();
-
+const PostItemAdmin = ({
+	getPost,
+	post: { posts },
+	posts: { postid, user_id, title, content, tags, postStatus, created_at },
+	addLike,
+	removeLike,
+	deletePost,
+	showActions,
+	match,
+}) => {
 	useEffect(() => {
-		axios.get(`http://localhost:3006/api/posts/${postid}`).then((data) => {
-			console.log(data.data);
-			setPost({
-				title: data.data[0].title,
-				content: data.data[0].content,
-				tags: data.data[0].tags,
-				created_at: data.data[0].created_at,
-			});
-		});
-	}, []);
-
-	const OnDelete = () => {
-		try {
-			axios.delete(`http://localhost:3006/api/posts/${postid}`);
-			console.log('Post Deleted');
-			navigate('/posts');
-		} catch (err) {
-			console.error(err.message);
-		}
-	};
+		getPost(posts.postid);
+	}, [getPost, posts.postid]);
 
 	return (
 		<Fragment>
@@ -55,33 +38,31 @@ const PostItemAdmin = () => {
 					<Fragment>
 						<div></div>
 						<div>
-							<h1>{post.title}</h1>
-							<p className='my-1'>{post.content}</p>
+							<h1>{title}</h1>
+							<p className='my-1'>{content}</p>
 							<p className='post-date'>
 								Posted on:
-								{post.created_at}
+								{created_at}
 							</p>
 							<div>
 								<br />
 							</div>
 							<button
-								onClick={() => {
-									SetShowCommentForm(!ShowCommentform);
-								}}
+								onClick={!showActions}
 								type='button'
 								className='btn btn-light'
 							>
 								<i className='fas fa-comments'></i>
 							</button>
 							<button
-								onClick={() => ''}
+								onClick={() => addLike('')}
 								type='button'
 								className='btn btn-light'
 							>
 								<i className='fas fa-thumbs-up' />{' '}
 							</button>
 							<button
-								onClick={() => ''}
+								onClick={() => removeLike('')}
 								type='button'
 								className='btn btn-light'
 							>
@@ -93,17 +74,10 @@ const PostItemAdmin = () => {
 								type='button'
 								className='btn btn-light'
 							>
-								<i className='fas fa-edit'></i>
-							</button>
-							<button
-								onClick={() => ''}
-								type='button'
-								className='btn btn-light'
-							>
 								<i className='fas fa-archive'></i>
 							</button>
 							<button
-								onClick={OnDelete}
+								onClick={() => deletePost(postid)}
 								type='button'
 								className='btn btn-danger'
 							>
@@ -117,13 +91,37 @@ const PostItemAdmin = () => {
 					<br />
 				</div>
 			</div>
+			<div className='container'>{showActions ? <CommentForm /> : null} </div>{' '}
 			<div className='container'>
-				{ShowCommentform ? <CommentForm /> : null}{' '}
-			</div>{' '}
-			<div className='container'>
-				<CommentItem postid={postid} />
+				<CommentItem />
 			</div>
 		</Fragment>
 	);
 };
-export default PostItemAdmin;
+
+PostItemAdmin.defaultProps = {
+	showActions: true,
+};
+
+PostItemAdmin.propTypes = {
+	auth: PropTypes.object.isRequired,
+	post: PropTypes.object.isRequired,
+	postid: PropTypes.object.isRequired,
+	getPost: PropTypes.func.isRequired,
+	addLike: PropTypes.func.isRequired,
+	removeLike: PropTypes.func.isRequired,
+	deletePost: PropTypes.func.isRequired,
+	showActions: PropTypes.bool,
+};
+
+const mapStateToProps = (state) => ({
+	auth: state.auth,
+	post: state.post,
+});
+
+export default connect(mapStateToProps, {
+	addLike,
+	removeLike,
+	deletePost,
+	getPost,
+})(PostItemAdmin);

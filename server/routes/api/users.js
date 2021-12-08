@@ -59,22 +59,20 @@ router.post(
 				'INSERT INTO tbl_users (username,password,email,usertype) VALUES($1,$2,$3,$4)',
 				[username, hashedPassword, email, usertype],
 			);
-			const payload = {
-				user: {
-					id: user.id,
-				},
-			};
-			const accessToken = sign(
-				{
-					payload,
-					userid: user.rows[0].userid,
-					username: user.rows[0].username,
-					email: user.rows[0].email,
-				},
-				'SecretKey',
-			);
-			res.json(accessToken);
-			res.json({ message: 'USER CREATED' });
+			if (!newuser) {
+				res.json({ message: 'TRY AGAIN WITH DIFFERENT CREDENTIALS!' });
+			} else {
+				const accessToken = jwt.sign(
+					{
+						userid: user.rows[0].userid,
+						username: user.rows[0].username,
+						email: user.rows[0].email,
+					},
+					'SecretKey',
+				);
+				res.json(accessToken);
+				res.json({ message: 'USER CREATED' });
+			}
 		} catch (err) {
 			console.error(err.message);
 		}
@@ -105,10 +103,7 @@ router.post('/login', async (req, res) => {
 		const user = await pool.query('SELECT * FROM tbl_users WHERE email=$1 ', [
 			email,
 		]);
-		const hashedPassword = await bcrypt.compareSync(
-			password,
-			user.rows[0].password,
-		);
+		const hashedPassword = bcrypt.compareSync(password, user.rows[0].password);
 		if (hashedPassword === false) {
 			res.json({ message: 'Invalid Credentials' });
 		} else {

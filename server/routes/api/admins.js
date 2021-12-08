@@ -60,26 +60,26 @@ router.post(
 				'INSERT INTO tbl_users (username,password,email,usertype) VALUES($1,$2,$3,$4)',
 				[username, hashedPassword, email, usertype],
 			);
-			const payload = {
-				user: {
-					id: user.id,
-				},
-			};
+			// const payload = {
+			// 	user: {
+			// 		id: user.id,
+			// 	},
+			// };
 			const accessToken = sign(
 				{
-					payload,
+					user,
 					userid: user.rows[0].userid,
 					username: user.rows[0].username,
 					email: user.rows[0].email,
 				},
 				'SecretKey',
-				(err, accessToken) => {
-					if (err) throw err;
-					res.json({ accessToken });
-				},
+				// (err, accessToken) => {
+				// 	if (err) throw err;
+				// 	res.json({ accessToken });
+				// },
 			);
 			res.json(accessToken);
-			res.json({ message: 'ADMIN CREATED' });
+			console.log('ADMIN CREATED');
 		} catch (err) {
 			console.error(err.message);
 		}
@@ -103,14 +103,12 @@ router.get('/', async (req, res) => {
 //Admin Login
 router.post('/login', async (req, res) => {
 	try {
-		const { email, password } = req.body;
+		const { email } = req.body;
+		const { password } = req.body;
 		const user = await pool.query('SELECT * FROM tbl_users WHERE email=$1 ', [
 			email,
 		]);
-		const hashedPassword = await bcrypt.compareSync(
-			password,
-			user.rows[0].password,
-		);
+		const hashedPassword = bcrypt.compareSync(password, user.rows[0].password);
 		if (hashedPassword === false) {
 			res.json({ message: 'Invalid Credentials' });
 		} else {
@@ -121,10 +119,10 @@ router.post('/login', async (req, res) => {
 					email: user.rows[0].email,
 				},
 				'SecretKey',
-				(err, accessToken) => {
-					if (err) throw err;
-					res.json({ accessToken });
-				},
+				// (err, accessToken) => {
+				// 	if (err) throw err;
+				// 	res.json({ accessToken });
+				// },
 			);
 			res.json(accessToken);
 			console.log('Logged In');

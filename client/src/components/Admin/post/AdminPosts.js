@@ -1,28 +1,18 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import Navbar from '../Navbar';
-import PostForm from './PostForm';
-import axios from 'axios';
+import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router';
-
-const Posts = () => {
-	const [listOfPosts, setListOfPosts] = useState([]);
-	const [pageNumber, setPageNumber] = useState(1);
+import NavbarAdmin from '../NavbarAdmin';
+import { getPosts } from '../../../actions/post';
+import { connect } from 'react-redux';
+const Posts = ({ getPosts, post: { posts } }) => {
 	let navigate = useNavigate();
 	useEffect(() => {
-		axios.get(`http://localhost:3006/api/posts`).then((data) => {
-			console.log(data.data);
-			setListOfPosts(data.data);
-		});
-	}, [pageNumber]);
-	const apihandler = () => {
-		setPageNumber(pageNumber + 1);
-	};
-	const apihandlerprev = () => {
-		setPageNumber(pageNumber - 1);
-	};
+		getPosts();
+	}, [getPosts]);
+
 	return (
 		<Fragment>
-			<Navbar />
+			<NavbarAdmin />
 			<div className='container'>
 				<h1 className='large text-primary'>Posts</h1>
 				<p className='lead'>
@@ -30,7 +20,7 @@ const Posts = () => {
 				</p>
 
 				<div className='posts'>
-					{listOfPosts.map((post) => (
+					{posts.map((post) => (
 						<div
 							className='post bg-white p-1 my-1'
 							key={post.postid}
@@ -96,13 +86,17 @@ const Posts = () => {
 					))}
 				</div>
 				<button
-					onClick={apihandlerprev}
+					// onClick={apihandlerprev}
 					type='button'
 					className='btn btn-light'
 				>
 					<i className='fas fa-long-arrow-alt-left'></i>
 				</button>
-				<button onClick={apihandler} type='button' className='btn btn-light'>
+				<button
+					// onClick={apihandler}
+					type='button'
+					className='btn btn-light'
+				>
 					<i className='fas fa-long-arrow-alt-right'></i>
 				</button>
 			</div>
@@ -110,4 +104,13 @@ const Posts = () => {
 	);
 };
 
-export default Posts;
+Posts.propTypes = {
+	getPosts: PropTypes.func.isRequired,
+	post: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+	post: state.post,
+});
+
+export default connect(mapStateToProps, { getPosts })(Posts);

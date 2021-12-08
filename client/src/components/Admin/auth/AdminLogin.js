@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router';
-import axios from 'axios';
+import { useNavigate, Navigate } from 'react-router';
+
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { loginAdmin } from '../../../actions/auth';
 
-const AdminLogin = ({ loginAdmin }) => {
+const AdminLogin = ({ loginAdmin, isAuthenticated }) => {
 	let navigate = useNavigate();
 	const [formData, setFormData] = useState({
 		email: '',
@@ -20,25 +20,12 @@ const AdminLogin = ({ loginAdmin }) => {
 
 	const onSubmit = async (e) => {
 		e.preventDefault();
-		try {
-			const loggedinUser = await axios
-				.post('http://localhost:3006/api/admins/login', {
-					email: formData.email,
-					password: formData.password,
-				})
-				.then((response) => {
-					if (response.data.error) {
-						alert(response.data.error);
-					} else {
-						localStorage.setItem('accessToken', response.data);
-					}
-				});
-			navigate('/admin/posts');
-			console.log(loggedinUser);
-		} catch (err) {
-			console.error(err.message);
-		}
+		loginAdmin(email, password);
 	};
+
+	if (isAuthenticated) {
+		return <Navigate to='/admin/posts' />;
+	}
 
 	return (
 		<div className='container'>
@@ -75,4 +62,13 @@ const AdminLogin = ({ loginAdmin }) => {
 		</div>
 	);
 };
-export default AdminLogin;
+
+AdminLogin.protoTypes = {
+	loginAdmin: PropTypes.func.isRequired,
+	isAuthenticated: PropTypes.bool,
+};
+
+const mapStateToProps = (state) => ({
+	isAuthenticated: state.auth.isAuthenticated,
+});
+export default connect(mapStateToProps, { loginAdmin })(AdminLogin);

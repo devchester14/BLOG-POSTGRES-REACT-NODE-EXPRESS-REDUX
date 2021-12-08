@@ -1,60 +1,32 @@
-import axios from 'axios';
 import React, { Fragment, useState } from 'react';
-import { useNavigate } from 'react-router';
-import Navbar from '../Navbar';
+import { addPost } from '../../../actions/post';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
+import NavbarAdmin from '../NavbarAdmin';
 const PostForm = ({ addPost }) => {
-	let navigate = useNavigate();
-	const [text, setText] = useState({
-		title: '',
-		content: '',
-		tags: '',
-	});
+	const [text, setText] = useState('');
 
-	const { title, content, tags } = text;
+	// const { title, content, tags } = text;
 
-	const onChange = (e) => setText({ ...text, [e.target.name]: e.target.value });
-
-	const onSubmit = async (e) => {
-		e.preventDefault();
-		try {
-			// const body = { text };
-			const addpost = await axios
-				.post(
-					'http://localhost:3006/api/posts',
-					{
-						title: text.title,
-						content: text.content,
-						tags: text.tags,
-						poststatus: '1',
-					},
-					{
-						headers: {
-							accessToken: localStorage.getItem('accessToken'),
-						},
-					},
-				)
-				.then((response) => {
-					if (response.data.error) {
-						console.log(response.data.error);
-					} else {
-						setText = [...text, addpost];
-					}
-				});
-			navigate('/admin/posts');
-		} catch (err) {
-			console.error(err.message);
-		}
-	};
+	// const onChange = (e) => setText({ ...text, [e.target.name]: e.target.value });
 
 	return (
 		<Fragment>
-			<Navbar />
+			<NavbarAdmin />
 			<div className='post-form '>
 				<div className='container'>
 					<div className='bg-primary p'>
 						<h3>Say Something...</h3>
 					</div>
-					<form className='form my-1' onSubmit={onSubmit}>
+					<form
+						className='form my-1'
+						onSubmit={(e) => {
+							e.preventDefault();
+							addPost({ text });
+							setText('');
+						}}
+					>
 						<div className='form-group'>
 							<textarea
 								type='text'
@@ -62,8 +34,8 @@ const PostForm = ({ addPost }) => {
 								cols='30'
 								rows='1'
 								placeholder='Create a post Title'
-								value={title}
-								onChange={onChange}
+								// value={title}
+								onChange={(e) => setText(e.target.value)}
 								required
 							/>
 						</div>
@@ -74,8 +46,8 @@ const PostForm = ({ addPost }) => {
 								cols='30'
 								rows='7'
 								placeholder='Post Content'
-								value={content}
-								onChange={onChange}
+								// value={content}
+								onChange={(e) => setText(e.target.value)}
 								required
 							/>
 						</div>
@@ -86,8 +58,8 @@ const PostForm = ({ addPost }) => {
 								cols='30'
 								rows='1'
 								placeholder='tags'
-								value={tags}
-								onChange={onChange}
+								// value={tags}
+								onChange={(e) => setText(e.target.value)}
 								required
 							/>
 						</div>
@@ -103,9 +75,8 @@ const PostForm = ({ addPost }) => {
 	);
 };
 
-// PostForm.propTypes = {
-// 	addPost: PropTypes.func.isRequired,
-// };
+PostForm.propTypes = {
+	addPost: PropTypes.func.isRequired,
+};
 
-// export default connect(null, { addPost })(PostForm);
-export default PostForm;
+export default connect(null, { addPost })(PostForm);
