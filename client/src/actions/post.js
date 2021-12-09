@@ -84,7 +84,11 @@ export const addPost = (FormData) => async (dispatch) => {
 		const res = await api.post('/posts', FormData);
 		dispatch({
 			type: ADD_POST,
-			payload: res.data,
+			payload: {
+				title: res.data.title,
+				content: res.data.content,
+				tags: res.data.tags,
+			},
 		});
 
 		dispatch(setAlert('Post Created', 'success'));

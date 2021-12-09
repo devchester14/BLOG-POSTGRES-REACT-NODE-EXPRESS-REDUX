@@ -5,9 +5,9 @@ import { connect } from 'react-redux';
 
 import NavbarAdmin from '../NavbarAdmin';
 const PostForm = ({ addPost }) => {
-	const [text, setText] = useState('');
+	const [text, setText] = useState({ title: '', content: '', tags: '' });
 
-	// const { title, content, tags } = text;
+	const { title, content, tags } = text;
 
 	// const onChange = (e) => setText({ ...text, [e.target.name]: e.target.value });
 
@@ -34,7 +34,7 @@ const PostForm = ({ addPost }) => {
 								cols='30'
 								rows='1'
 								placeholder='Create a post Title'
-								// value={title}
+								value={title}
 								onChange={(e) => setText(e.target.value)}
 								required
 							/>
@@ -46,7 +46,7 @@ const PostForm = ({ addPost }) => {
 								cols='30'
 								rows='7'
 								placeholder='Post Content'
-								// value={content}
+								value={content}
 								onChange={(e) => setText(e.target.value)}
 								required
 							/>
@@ -58,7 +58,7 @@ const PostForm = ({ addPost }) => {
 								cols='30'
 								rows='1'
 								placeholder='tags'
-								// value={tags}
+								value={tags}
 								onChange={(e) => setText(e.target.value)}
 								required
 							/>

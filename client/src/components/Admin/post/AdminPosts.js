@@ -30,11 +30,7 @@ const Posts = ({ getPosts, post: { posts } }) => {
 								<div></div>
 								<div>
 									<h1 className='my-1'>{post.title}</h1>
-									<p className='my-1'>
-										{post.content.length > 50
-											? post.content.substring(0, 120) + ' ...'
-											: post.content}
-									</p>
+									<p className='my-1'>{post.content}</p>
 									<h4 className='my-1'>{post.tags}</h4>
 									<p className='post-date'>Posted on:{post.created_at}</p>
 									<button

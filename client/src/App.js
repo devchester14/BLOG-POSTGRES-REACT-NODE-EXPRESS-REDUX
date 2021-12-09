@@ -20,12 +20,13 @@ import { loadAdmin, loadUser } from './actions/auth';
 import { LOGOUT } from './actions/types';
 import setAuthToken from './utils/setAuthToken';
 import NotFound from './components/User/layout/NotFound';
+import PrivateRoute from './components/routing/PrivateRoute';
 
 function App() {
 	useEffect(() => {
 		if (localStorage.token) {
 			setAuthToken(localStorage.token);
-			// store.dispatch(loadUser() || loadAdmin());
+			store.dispatch(loadAdmin());
 		} else if (!localStorage.token) {
 			store.dispatch({ type: LOGOUT });
 		}
