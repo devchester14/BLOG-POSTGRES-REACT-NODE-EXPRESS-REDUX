@@ -27,20 +27,6 @@ const AdminRegister = ({ setAlert, registerAdmin, isAuthenticated }) => {
 			setAlert('Passwords do not match', 'danger');
 		} else {
 			registerAdmin({ username, email, password });
-			// try {
-			// 	// const body = { formData };
-			// 	const newuser = await axios
-			// 		.post('http://localhost:3006/api/admins', {
-			// 			username: formData.username,
-			// 			password: formData.password,
-			// 			email: formData.email,
-			// 		})
-			// 		.then((response) => console.log(response));
-			// 	navigate('/posts');
-			// 	console.log(newuser);
-			// } catch (err) {
-			// 	console.error(err.message);
-			// }
 		}
 	};
 	if (isAuthenticated) {

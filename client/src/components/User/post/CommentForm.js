@@ -23,7 +23,7 @@ const CommentForm = ({ postId, addComment }) => {
 					},
 					{
 						headers: {
-							accessToken: localStorage.getItem('accessToken'),
+							accessToken: localStorage.getItem('token'),
 						},
 					},
 				)

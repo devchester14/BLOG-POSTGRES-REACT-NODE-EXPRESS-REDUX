@@ -60,26 +60,22 @@ router.post(
 				'INSERT INTO tbl_users (username,password,email,usertype) VALUES($1,$2,$3,$4)',
 				[username, hashedPassword, email, usertype],
 			);
-			// const payload = {
-			// 	user: {
-			// 		id: user.id,
-			// 	},
-			// };
-			const accessToken = sign(
-				{
-					user,
-					userid: user.rows[0].userid,
-					username: user.rows[0].username,
-					email: user.rows[0].email,
-				},
-				'SecretKey',
-				// (err, accessToken) => {
-				// 	if (err) throw err;
-				// 	res.json({ accessToken });
-				// },
-			);
-			res.json(accessToken);
-			console.log('ADMIN CREATED');
+			console.log(user);
+			if (!user) {
+				res.json({ message: 'TRY AGAIN WITH DIFFERENT CREDENTIALS' });
+			} else {
+				const token = sign(
+					{
+						userid: user?.rows?.[0]?.userid,
+						username: user?.rows?.[0]?.username,
+						email: user?.rows?.[0]?.email,
+					},
+					'SecretKey',
+				);
+				console.log(token);
+				res.json(token);
+				console.log('ADMIN CREATED');
+			}
 		} catch (err) {
 			console.error(err.message);
 		}
@@ -108,23 +104,22 @@ router.post('/login', async (req, res) => {
 		const user = await pool.query('SELECT * FROM tbl_users WHERE email=$1 ', [
 			email,
 		]);
-		const hashedPassword = bcrypt.compareSync(password, user.rows[0].password);
+		const hashedPassword = bcrypt.compare(
+			user.rows[0].password,
+			req.body.password,
+		);
 		if (hashedPassword === false) {
 			res.json({ message: 'Invalid Credentials' });
 		} else {
-			const accessToken = sign(
+			const token = jwt.sign(
 				{
 					userid: user.rows[0].userid,
 					username: user.rows[0].username,
 					email: user.rows[0].email,
 				},
 				'SecretKey',
-				// (err, accessToken) => {
-				// 	if (err) throw err;
-				// 	res.json({ accessToken });
-				// },
 			);
-			res.json(accessToken);
+			res.json(token);
 			console.log('Logged In');
 		}
 	} catch (err) {
@@ -135,7 +130,12 @@ router.post('/login', async (req, res) => {
 
 //auth
 router.get('/auth', validateToken, (req, res) => {
-	res.json(req.user);
+	try {
+		res.json(req.user);
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).send('server error!');
+	}
 });
 
 module.exports = router;

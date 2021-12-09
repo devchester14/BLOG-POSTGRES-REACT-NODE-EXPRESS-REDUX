@@ -28,7 +28,7 @@ const Login = ({ login, isAuthenticated }) => {
 					if (response.data.error) {
 						alert(response.data.error);
 					} else {
-						localStorage.setItem('accessToken', response.data);
+						localStorage.setItem('token', response.data);
 					}
 				});
 			navigate('/posts');

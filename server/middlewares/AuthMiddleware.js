@@ -2,12 +2,14 @@ const { verify } = require('jsonwebtoken');
 
 //For Admin
 const validateToken = (req, res, next) => {
-	const accessToken = req.header('accessToken');
+	const token = req.header('x-auth-token');
 
-	if (!accessToken) return res.json({ error: 'Admin not logged in!' });
+	if (!token) {
+		return res.json({ error: 'Admin not logged in!' });
+	}
 
 	try {
-		const validToken = verify(accessToken, 'SecretKey');
+		const validToken = jwt.verify(token, 'SecretKey');
 		req.user = validToken;
 
 		if (validToken) {
@@ -20,12 +22,12 @@ const validateToken = (req, res, next) => {
 
 //For Users
 const validateUserToken = (req, res, next) => {
-	const accessToken = req.header('accessToken');
+	const token = req.header('x-auth-token');
 
-	if (!accessToken) return res.json({ error: 'Admin not logged in!' });
+	if (!token) return res.json({ error: 'User not logged in!' });
 
 	try {
-		const validToken = verify(accessToken, 'SecretKey');
+		const validToken = verify(token, 'SecretKey');
 		req.user = validToken;
 
 		if (validToken) {

@@ -13,12 +13,13 @@ import UserLanding from './components/User/layout/UserLanding';
 import Posts from './components/User/post/Posts';
 import AdminLogin from './components/Admin/auth/AdminLogin';
 import PostItemAdmin from './components/Admin/post/PostItemAdmin';
-import { Provider } from 'react-redux';
 import PostItemUser from './components/User/post/PostItem';
+import { Provider } from 'react-redux';
 import store from './store';
 import { loadAdmin, loadUser } from './actions/auth';
 import { LOGOUT } from './actions/types';
 import setAuthToken from './utils/setAuthToken';
+import NotFound from './components/User/layout/NotFound';
 
 function App() {
 	useEffect(() => {
@@ -64,7 +65,8 @@ function App() {
 							path='/adminpostitem/:postid'
 							element={<PostItemAdmin />}
 						/>
-						<Route element={Routes} />
+						<Route element={<NotFound />} />
+						<Route element={<Routes />} />
 					</Routes>
 				</Fragment>
 			</Router>

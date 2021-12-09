@@ -2,11 +2,11 @@ import api from './api';
 
 const setAuthToken = (token) => {
 	if (token) {
-		api.defaults.headers.common['accessToken'] = token;
-		localStorage.setItem('accessToken', token);
+		api.defaults.headers.common['x-auth-token'] = token;
+		localStorage.setItem('token', token);
 	} else {
-		delete api.defaults.headers.common['accessToken'];
-		localStorage.removeItem('accessToken');
+		delete api.defaults.headers.common['x-auth-token'];
+		localStorage.removeItem('token');
 	}
 };
 
